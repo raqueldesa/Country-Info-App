@@ -11,7 +11,13 @@ export class CountryService {
 
     try {
       const response = await firstValueFrom(this.httpService.get(apiUrl));
-      return response.data;
+
+      const modifiedResponse = response.data.map((country: any) => ({
+        countryCode: country.countryCode,
+        commonName: country.name,
+      }));
+
+      return modifiedResponse;
     } catch (error) {
       throw new Error(`Erro ao consultar a API: ${error.message}`);
     }
@@ -24,7 +30,7 @@ export class CountryService {
 
     const completeInfoCountry = {
       countryCode,
-      name,
+      commonName: name,
       flag: null,
       borders: [],
       population: [],
